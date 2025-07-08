@@ -1,47 +1,50 @@
 package alurachallenge.foro_hub.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Table(name = "Topicos")
+@Entity(name = "Topico")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+
 public class Topico {
-    private int id;
-    private String usuario;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String titulo;
     private String mensaje;
 
-    public Topico(int id, String usuario, String titulo, String mensaje) {
-        this.id = id;
-        this.usuario = usuario;
-        this.titulo = titulo;
-        this.mensaje = mensaje;
-    }
+    @Column(name = "fechacreacion")
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private Boolean status = true;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne(fetch = fetchType.LAZY)
+    @JoinColumn(name = "autor")
+    private Usuario autor;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = fetchType.LAZY)
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
-    public String getUsuario() {
-        return usuario;
-    }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public Topico(DatosRegistroTopico datos, Usuario autor, Curso curso) {
+        this.titulo = datos.titulo();
+        this.mensaje = datos.mensaje();
+        this.autor = autor;
+        this.curso = curso;
+        this.fechaCreacion = LocalDateTime.now();
+        this.status = true;
     }
 }
