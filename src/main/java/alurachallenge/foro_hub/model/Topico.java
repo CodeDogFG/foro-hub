@@ -30,11 +30,11 @@ public class Topico {
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     private Boolean status = true;
 
-    @ManyToOne(fetch = fetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor")
     private Usuario autor;
 
-    @ManyToOne(fetch = fetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
